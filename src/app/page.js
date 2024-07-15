@@ -44,7 +44,6 @@ const Home = () => {
         };
     }, []);
 
-    const messageArray = Object.entries(messages).map(([topic, value]) => ({ topic, value }));
 
     return (
         <div className="container">
@@ -58,7 +57,6 @@ const Home = () => {
                             <div className='content'>
                                 <p className="messageContent">Meter Value: {value[0]}</p>
                                 <p className="messageContent">{format(value[1], 'HH:mm:ss - dd/MM')}</p>
-                                {/* <p className="messageContent">{value[1].toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p> */}
                             </div>
                         </div>
                     ))
