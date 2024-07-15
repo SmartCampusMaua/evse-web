@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import mqtt from 'mqtt';
+import { format } from 'date-fns'; 
+
 const Home = () => {
     const [messages, setMessages] = useState({});
     const [status, setStatus] = useState("");
@@ -27,12 +29,14 @@ const Home = () => {
         client.on('message', (topic, message) => {
             const jsonObject = JSON.parse(message.toString());
             if (jsonObject.data.type === "MeterValues") {
+                const date = new Date(jsonObject.data.timestamp);
+
                 setMessages(prevMessages => ({
                     ...prevMessages,
-                    // [jsonObject.data.deviceId]: (jsonObject.data.value, jsonObject.data.timestamp)
-                    [jsonObject.data.deviceId]: jsonObject.data.value
+                    [jsonObject.data.deviceId]: [jsonObject.data.value,date]
                 }));
             }
+
         });
 
         return () => {
@@ -51,12 +55,15 @@ const Home = () => {
                     Object.entries(messages).map(([connectorID, value]) => (
                         <div key={connectorID} className="messageContainer">
                             <h2 className="messageHeader">Carregador {connectorID}</h2>
-                            <p className="messageContent">Meter Value: {value}</p>
-                            {/* <p className="messageContent">Meter Value: {value[0]}</p> */}
-                            {/* <p className="messageContent">Meter Value: {value[1]}</p> */}
+                            <div className='content'>
+                                <p className="messageContent">Meter Value: {value[0]}</p>
+                                <p className="messageContent">{format(value[1], 'HH:mm:ss - dd/MM')}</p>
+                                {/* <p className="messageContent">{value[1].toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p> */}
+                            </div>
                         </div>
                     ))
                 ) : (
+
                     <p className="noMessages">No messages</p>
                 )}
             </div>
