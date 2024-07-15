@@ -4,6 +4,14 @@ import React, { useEffect, useState } from 'react';
 import mqtt from 'mqtt';
 import { format } from 'date-fns'; 
 
+const connectors = {
+    "erro": 'Outros Carregadores',
+    "19400577": "Carregador Lanchonete",
+    "19743013": "Carregador Bloco B",
+    "Simulador-1": "Simulador"
+  };
+  
+
 const Home = () => {
     const [messages, setMessages] = useState({});
     const [status, setStatus] = useState("");
@@ -12,6 +20,7 @@ const Home = () => {
         username: 'PUBLIC',
         password: 'public',
     };
+
 
     useEffect(() => {
         const client = mqtt.connect(broker, options);
@@ -30,7 +39,9 @@ const Home = () => {
             const jsonObject = JSON.parse(message.toString());
             if (jsonObject.data.type === "MeterValues") {
                 const date = new Date(jsonObject.data.timestamp);
-
+                if ( connectors.hasOwnProperty(jsonObject.data.deviceId) ){
+                    jsonObject.data.deviceId = connectors[jsonObject.data.deviceId]
+                }
                 setMessages(prevMessages => ({
                     ...prevMessages,
                     [jsonObject.data.deviceId]: [jsonObject.data.value,date]
@@ -56,7 +67,7 @@ const Home = () => {
                             <h2 className="messageHeader">Carregador {connectorID}</h2>
                             <div className='content'>
                                 <p className="messageContent">Meter Value: {value[0]}</p>
-                                <p className="messageContent">{format(value[1], 'HH:mm:ss - dd/MM')}</p>
+                                <p className="messageContent">{format(value[1], 'HH:mm:ss-dd/MM')}</p>
                             </div>
                         </div>
                     ))
