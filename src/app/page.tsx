@@ -101,7 +101,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
               {chargers.length > 0 ? (
                 chargers.map((charger, index) => (
-                  <div key={index} className="background bg-zinc-300 dark:bg-neutral-700 rounded-lg shadow-md p-4 w-full sm:w-[90%] mx-auto">
+                  <div key={index} className="background bg-zinc-300 dark:bg-neutral-700 rounded-lg shadow-md p-4 w-full sm:w-[90%] mx-auto border-2 border-slate-800 dark:border-slate-300">
                     <h2 className="text-xl font-semibold text-center">Carregador {charger.name}</h2>
                     <div className="mt-2 text-center text-xl">
                       <div className="background flex items-center">
