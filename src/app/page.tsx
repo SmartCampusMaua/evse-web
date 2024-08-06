@@ -26,7 +26,7 @@ class Charger {
 export default function Home() {
   const [chargers, setChargers] = useState<Charger[]>([]);
   const [status, setStatus] = useState("");
-  const broker = "ws://weblab.maua.br:9001";
+  const broker = "ws://mqtt.maua.br:8083";
   const options = {
     username: 'PUBLIC',
     password: 'public',
@@ -97,7 +97,6 @@ export default function Home() {
           <div className="absolute inset-0 bg-[url('/battery.png')] dark:bg-[url('/batteryW.png')] bg-no-repeat bg-center bg-contain" style={{ opacity: '0.05' }}></div>
           <div className="flex flex-col items-start justify-start h-full relative z-10 p-4">
             <h1 className="text-3xl font-bold mb-4">Carregadores de Veículo Elétrico EVSE</h1>
-            <p className="background">{status}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
               {chargers.length > 0 ? (
                 chargers.map((charger, index) => (
@@ -108,7 +107,7 @@ export default function Home() {
                         <span>{charger.status ? "Carregando" : "Carregamento Concluído"}</span>
                         <span>: {Math.round(charger.total)} Wh</span>
                       </div>
-                      <p className="background flex">Tempo de carregamento: {Math.floor((charger.finish.getTime() - charger.start.getTime()) / 1000 / 60) % 10} min</p>
+                      <p className="background flex">Tempo de carregamento: {Math.floor((charger.finish.getTime() - charger.start.getTime()) / 1000 / 60)} min</p>
                     </div>
                   </div>
                 ))
