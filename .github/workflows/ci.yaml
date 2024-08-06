@@ -14,9 +14,9 @@ jobs:
           bun-version: 1.0.11
 
       # run any `bun` or `bunx` command
-      - run: bun install
-      - run: bun index.ts
-      - run: bun run build
+      # - run: bun install
+      # - run: bun index.ts
+      # - run: bun run build
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
