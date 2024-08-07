@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: rogeriocassares/evse-web:0.11
+          tags: rogeriocassares/evse-web:0.12
