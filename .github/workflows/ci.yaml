@@ -9,14 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.0.11
-
-      # run any `bun` or `bunx` command
-      # - run: bun install
-      # - run: bun index.ts
-      # - run: bun run build
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -34,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: rogeriocassares/evse-web:0.4
+          tags: rogeriocassares/evse-web:0.11
