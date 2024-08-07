@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: "standalone"
+    basePath: '/evse',
+    output: "standalone",
 };
 
 export default nextConfig;
