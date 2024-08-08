@@ -26,7 +26,7 @@ class Charger {
 export default function Home() {
   const [chargers, setChargers] = useState<Charger[]>([]);
   const [status, setStatus] = useState("");
-  const broker = "ws://mqtt.maua.br:8083";
+  const broker = "wss://mqtt.maua.br:8084";
   const options = {
     username: 'PUBLIC',
     password: 'public',
@@ -94,7 +94,7 @@ export default function Home() {
     <>
       <main className="p-0 overscroll-none">
         <div className="relative min-h-screen">
-          <div className="absolute inset-0 bg-[url('/battery.png')] dark:bg-[url('/batteryW.png')] bg-no-repeat bg-center bg-contain" style={{ opacity: '0.05' }}></div>
+          <div className="absolute inset-0 bg-[url('/evse/battery.png')] dark:bg-[url('/evse/batteryW.png')] bg-no-repeat bg-center bg-contain" style={{ opacity: '0.05' }}></div>
           <div className="flex flex-col items-start justify-start h-full relative z-10 p-4">
             <h1 className="text-3xl font-bold mb-4">Carregadores de Veículo Elétrico EVSE</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
