@@ -22,16 +22,24 @@ class Charger {
     this.buffer = buffer;
   }
 }
-
+const connectors: Record<string, string> = {
+  "erro": "Outros Carregadores",
+  "19400577": "Carregador Lanchonete",
+  "19743013": "Carregador Bloco B",
+  "Simulador-1": "Simulador",
+};
 export default function Home() {
+  //configuring MQTT and state variables
   const [chargers, setChargers] = useState<Charger[]>([]);
+  // const [chargers, setChargers] = useState<Record<string, Charger>>({});
+
   const [status, setStatus] = useState("");
-  const broker = "wss://mqtt.maua.br:8084";
+  const broker = "ws://mqtt.maua.br:8083";
   const options = {
     username: 'PUBLIC',
     password: 'public',
   };
-
+  //  connecting with the Broker
   useEffect(() => {
     const client = mqtt.connect(broker, options);
 
@@ -46,18 +54,30 @@ export default function Home() {
     });
 
     client.on('message', (topic, message) => {
+      // console.log(topic,message.toString)
+      console.log(message.toString)
       const jsonObject = JSON.parse(message.toString());
-      if (jsonObject.data.type === "MeterValues" && jsonObject.data.deviceId !== "EVSE_1") {
-        if (jsonObject.data.deviceId === "19743013") jsonObject.data.deviceId = "Centro Acadêmico";
-        else if (jsonObject.data.deviceId === "19400577") jsonObject.data.deviceId = "Bloco A";
+      console.log(jsonObject)
+      console.log(jsonObject.data.deviceId)
 
+      if ( connectors.hasOwnProperty(jsonObject.data.deviceId) ){
+        jsonObject.data.name = connectors[jsonObject.data.deviceId]
+        console.log("__________________")
+        console.log(jsonObject.data.deviceId)
+        console.log("_________NOME_________")
+        console.log(jsonObject.data.name)
+    }
+
+      if (jsonObject.data.type === "MeterValues" && jsonObject.data.deviceId !== "EVSE_1") {
+      
         setChargers(prevChargers => {
-          const chargerIndex = prevChargers.findIndex(item => item.name === jsonObject.data.deviceId);
+
+          const chargerIndex = prevChargers.findIndex(item => item.name === jsonObject.data.name);
           const powerValue = jsonObject.data.value;
           const timestamp = new Date(jsonObject.data.timestamp);
 
           if (chargerIndex === -1) {
-            const newCharger = new Charger(jsonObject.data.deviceId, powerValue, false, 0, timestamp, timestamp);
+            const newCharger = new Charger(jsonObject.data.name, powerValue, false, 0, timestamp, timestamp);
             return [...prevChargers, newCharger];
           } else {
             return prevChargers.map((charger, index) => {
@@ -83,6 +103,8 @@ export default function Home() {
           }
         });
       }
+      // console.log("CHARGES")
+      // console.log(chargers)
     });
 
     return () => {
@@ -94,7 +116,7 @@ export default function Home() {
     <>
       <main className="p-0 overscroll-none">
         <div className="relative min-h-screen">
-          <div className="absolute inset-0 bg-[url('/evse/battery.png')] dark:bg-[url('/evse/batteryW.png')] bg-no-repeat bg-center bg-contain" style={{ opacity: '0.05' }}></div>
+          <div className="absolute inset-0 bg-[url('/battery.png')] dark:bg-[url('/batteryW.png')] bg-no-repeat bg-center bg-contain" style={{ opacity: '0.05' }}></div>
           <div className="flex flex-col items-start justify-start h-full relative z-10 p-4">
             <h1 className="text-3xl font-bold mb-4">Carregadores de Veículo Elétrico EVSE</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
