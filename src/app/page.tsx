@@ -34,7 +34,7 @@ export default function Home() {
   // const [chargers, setChargers] = useState<Record<string, Charger>>({});
 
   const [status, setStatus] = useState("");
-  const broker = "ws://mqtt.maua.br:8083";
+  const broker = "wss://mqtt.maua.br:8084";
   const options = {
     username: 'PUBLIC',
     password: 'public',
